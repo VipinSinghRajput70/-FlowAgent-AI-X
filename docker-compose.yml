@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: flowagent-postgres-db
+    restart: always
+    environment:
+      POSTGRES_USER: flowagent_user
+      POSTGRES_PASSWORD: flowagent_secure_password
+      POSTGRES_DB: flowagent_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    container_name: flowagent-application
+    restart: always
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=postgresql://flowagent_user:flowagent_secure_password@db:5432/flowagent_db
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - SECRET_KEY=flowagent_secure_hackathon_token_secret_key_2026
+    ports:
+      - "8000:8000"
+      - "8501:8501"
+
+volumes:
+  postgres_data:

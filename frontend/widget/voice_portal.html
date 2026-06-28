@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FlowAgent AI — Voice Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: transparent;
+    color: #e2e8f0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 16px;
+    min-height: 100vh;
+  }
+
+  .voice-card {
+    width: 100%;
+    max-width: 680px;
+    background: rgba(13, 20, 40, 0.85);
+    border: 1px solid rgba(0, 242, 254, 0.2);
+    border-radius: 20px;
+    padding: 28px;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 0 40px rgba(0,242,254,0.05);
+  }
+
+  .portal-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #00f2fe 0%, #4f46e5 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 6px;
+  }
+
+  .portal-subtitle {
+    font-size: 0.82rem;
+    color: #64748b;
+    margin-bottom: 20px;
+  }
+
+  /* ── Mic Button ── */
+  .mic-ring {
+    position: relative;
+    width: 96px;
+    height: 96px;
+    margin: 0 auto 20px;
+    cursor: pointer;
+  }
+
+  .mic-ring::before {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    background: conic-gradient(#00f2fe, #4f46e5, #00f2fe);
+    opacity: 0;
+    transition: opacity 0.3s;
+    animation: spin 2s linear infinite;
+  }
+
+  .mic-ring.listening::before { opacity: 1; }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .mic-btn {
+    position: relative;
+    z-index: 1;
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    border: 2px solid rgba(0,242,254,0.4);
+    background: rgba(0,242,254,0.07);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.4rem;
+    transition: all 0.25s;
+    user-select: none;
+    cursor: pointer;
+  }
+
+  .mic-btn:hover { background: rgba(0,242,254,0.14); transform: scale(1.05); }
+  .mic-ring.listening .mic-btn {
+    background: rgba(0,242,254,0.18);
+    border-color: #00f2fe;
+    box-shadow: 0 0 24px rgba(0,242,254,0.5);
+  }
+  .mic-ring.speaking .mic-btn {
+    background: rgba(79,70,229,0.18);
+    border-color: #4f46e5;
+    box-shadow: 0 0 24px rgba(79,70,229,0.5);
+  }
+
+  /* ── Waveform bars ── */
+  .waveform {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    height: 40px;
+    margin: 0 auto 16px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .waveform.active { opacity: 1; }
+
+  .wave-bar {
+    width: 4px;
+    border-radius: 4px;
+    background: linear-gradient(to top, #4f46e5, #00f2fe);
+    animation: wave-bounce 0.7s ease-in-out infinite;
+  }
+  .wave-bar:nth-child(1) { animation-delay: 0s;    height: 16px; }
+  .wave-bar:nth-child(2) { animation-delay: 0.1s;  height: 28px; }
+  .wave-bar:nth-child(3) { animation-delay: 0.2s;  height: 40px; }
+  .wave-bar:nth-child(4) { animation-delay: 0.3s;  height: 28px; }
+  .wave-bar:nth-child(5) { animation-delay: 0.4s;  height: 16px; }
+  .wave-bar:nth-child(6) { animation-delay: 0.15s; height: 24px; }
+  .wave-bar:nth-child(7) { animation-delay: 0.05s; height: 32px; }
+
+  @keyframes wave-bounce {
+    0%, 100% { transform: scaleY(0.4); }
+    50%       { transform: scaleY(1); }
+  }
+
+  /* ── Status label ── */
+  .status-label {
+    text-align: center;
+    font-size: 0.85rem;
+    color: #64748b;
+    min-height: 20px;
+    transition: color 0.3s;
+    margin-bottom: 16px;
+  }
+  .status-label.listening { color: #00f2fe; }
+  .status-label.thinking  { color: #fbbf24; }
+  .status-label.speaking  { color: #a78bfa; }
+  .status-label.error     { color: #f87171; }
+
+  /* ── Transcript box ── */
+  .transcript-box {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 12px;
+    padding: 14px 16px;
+    min-height: 52px;
+    font-size: 0.9rem;
+    color: #94a3b8;
+    margin-bottom: 14px;
+    word-break: break-word;
+    transition: border-color 0.3s;
+  }
+  .transcript-box.has-content { border-color: rgba(0,242,254,0.25); color: #e2e8f0; }
+
+  .transcript-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #475569;
+    margin-bottom: 5px;
+  }
+
+  /* ── Response box ── */
+  .response-box {
+    background: rgba(0,242,254,0.04);
+    border: 1px solid rgba(0,242,254,0.15);
+    border-radius: 12px;
+    padding: 14px 16px;
+    min-height: 52px;
+    font-size: 0.9rem;
+    color: #e2e8f0;
+    line-height: 1.6;
+    margin-bottom: 14px;
+    word-break: break-word;
+    display: none;
+  }
+  .response-box.visible { display: block; }
+
+  /* ── Badges ── */
+  .badge-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .badge {
+    font-size: 0.72rem;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-weight: 600;
+    border: 1px solid;
+  }
+  .badge-blue   { color: #60a5fa; border-color: #60a5fa; background: rgba(96,165,250,0.08); }
+  .badge-green  { color: #34d399; border-color: #34d399; background: rgba(52,211,153,0.08); }
+  .badge-red    { color: #f87171; border-color: #f87171; background: rgba(248,113,113,0.08); }
+  .badge-purple { color: #a78bfa; border-color: #a78bfa; background: rgba(167,139,250,0.08); }
+  .badge-yellow { color: #fbbf24; border-color: #fbbf24; background: rgba(251,191,36,0.08); }
+
+  /* ── Instruction hint ── */
+  .hint {
+    text-align: center;
+    font-size: 0.8rem;
+    color: #334155;
+    margin-top: 4px;
+  }
+
+  /* ── Not supported message ── */
+  #not-supported {
+    display: none;
+    text-align: center;
+    color: #f87171;
+    font-size: 0.9rem;
+    padding: 20px;
+  }
+
+  /* ── Config inputs ── */
+  .config-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .config-input {
+    flex: 1;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 8px 12px;
+    color: #e2e8f0;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.82rem;
+    outline: none;
+  }
+  .config-input:focus { border-color: rgba(0,242,254,0.4); }
+  .config-input::placeholder { color: #475569; }
+</style>
+</head>
+<body>
+
+<div class="voice-card">
+  <div class="portal-title">🎙️ FlowAgent AI — Voice Portal</div>
+  <div class="portal-subtitle">Speak your query — AI agents respond in real-time</div>
+
+  <!-- Config row: backend URL + session + email -->
+  <div class="config-row">
+    <input class="config-input" id="cfg-name"  placeholder="Your name (e.g. Vipin Kumar)" value="Voice User" />
+    <input class="config-input" id="cfg-email" placeholder="Email (e.g. you@company.com)" value="voice@flowagent.ai" />
+  </div>
+
+  <div id="not-supported">
+    ⚠️ Your browser does not support the Web Speech API.<br>
+    Please use <strong>Google Chrome</strong> or <strong>Microsoft Edge</strong>.
+  </div>
+
+  <!-- Mic button -->
+  <div class="mic-ring" id="mic-ring" onclick="toggleListen()">
+    <div class="mic-btn" id="mic-btn">🎤</div>
+  </div>
+
+  <!-- Waveform -->
+  <div class="waveform" id="waveform">
+    <div class="wave-bar"></div>
+    <div class="wave-bar"></div>
+    <div class="wave-bar"></div>
+    <div class="wave-bar"></div>
+    <div class="wave-bar"></div>
+    <div class="wave-bar"></div>
+    <div class="wave-bar"></div>
+  </div>
+
+  <!-- Status -->
+  <div class="status-label" id="status-label">Click the microphone to speak</div>
+
+  <!-- Transcript -->
+  <div class="transcript-label">🗣️ You said:</div>
+  <div class="transcript-box" id="transcript-box">Waiting for voice input...</div>
+
+  <!-- Response -->
+  <div class="transcript-label" id="response-label" style="display:none;">🤖 FlowAgent AI responded:</div>
+  <div class="response-box" id="response-box"></div>
+
+  <!-- Metadata badges -->
+  <div class="badge-row" id="badge-row"></div>
+
+  <div class="hint">Powered by Gemini 1.5 Flash + ChromaDB RAG • Chrome/Edge required</div>
+</div>
+
+<script>
+  // ── Config ──────────────────────────────────────────────────────────────
+  // Try to get backend URL from parent window or default to localhost
+  const API_BASE = (window.location !== window.parent.location)
+    ? (window.FLOWAGENT_API_URL || 'http://localhost:8000')
+    : 'http://localhost:8000';
+
+  // ── State ────────────────────────────────────────────────────────────────
+  let recognition = null;
+  let isListening = false;
+  let sessionId = 'voice_' + Math.random().toString(36).slice(2, 9);
+
+  // ── Elements ─────────────────────────────────────────────────────────────
+  const micRing       = document.getElementById('mic-ring');
+  const micBtn        = document.getElementById('mic-btn');
+  const waveform      = document.getElementById('waveform');
+  const statusLabel   = document.getElementById('status-label');
+  const transcriptBox = document.getElementById('transcript-box');
+  const responseBox   = document.getElementById('response-box');
+  const responseLabel = document.getElementById('response-label');
+  const badgeRow      = document.getElementById('badge-row');
+  const notSupported  = document.getElementById('not-supported');
+
+  // ── Speech Recognition Setup ─────────────────────────────────────────────
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+  if (!SpeechRecognition) {
+    notSupported.style.display = 'block';
+    micRing.style.display = 'none';
+  } else {
+    recognition = new SpeechRecognition();
+    recognition.continuous      = false;
+    recognition.interimResults  = true;
+    recognition.lang            = 'en-IN';   // supports Hinglish too
+
+    recognition.onstart = () => {
+      isListening = true;
+      setStatus('listening', '🎙️ Listening... Speak now');
+      micRing.classList.add('listening');
+      waveform.classList.add('active');
+      micBtn.textContent = '⏹️';
+      transcriptBox.classList.remove('has-content');
+      transcriptBox.textContent = 'Listening...';
+    };
+
+    recognition.onresult = (event) => {
+      let interim = '';
+      let final   = '';
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        const t = event.results[i][0].transcript;
+        if (event.results[i].isFinal) final += t;
+        else interim += t;
+      }
+      transcriptBox.textContent = final || interim;
+      if (final || interim) transcriptBox.classList.add('has-content');
+
+      if (final) {
+        sendToAgents(final.trim());
+      }
+    };
+
+    recognition.onerror = (event) => {
+      resetUI();
+      setStatus('error', '⚠️ Mic error: ' + event.error + '. Please try again.');
+    };
+
+    recognition.onend = () => {
+      if (isListening) {
+        // If it ended without a result, just reset
+        resetUI();
+      }
+    };
+  }
+
+  // ── Toggle Listening ──────────────────────────────────────────────────────
+  function toggleListen() {
+    if (!recognition) return;
+    if (isListening) {
+      recognition.stop();
+      resetUI();
+    } else {
+      resetResponse();
+      recognition.start();
+    }
+  }
+
+  // ── Send transcript to FlowAgent AI API ──────────────────────────────────
+  async function sendToAgents(text) {
+    isListening = false;
+    micRing.classList.remove('listening');
+    waveform.classList.remove('active');
+    micBtn.textContent = '🎤';
+
+    setStatus('thinking', '🤔 Agents processing your query...');
+
+    const name  = document.getElementById('cfg-name').value  || 'Voice User';
+    const email = document.getElementById('cfg-email').value || 'voice@flowagent.ai';
+
+    try {
+      const resp = await fetch(`${API_BASE}/api/chat`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          customer_name:  name,
+          customer_email: email,
+          query:          text,
+          session_id:     sessionId,
+          channel:        'Voice Portal'
+        })
+      });
+
+      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+      const data = await resp.json();
+
+      displayResponse(data);
+      speakResponse(data.final_answer, data.detected_language);
+    } catch (err) {
+      setStatus('error', '❌ Agent pipeline failed: ' + err.message);
+    }
+  }
+
+  // ── Display Response ──────────────────────────────────────────────────────
+  function displayResponse(data) {
+    responseBox.textContent = data.final_answer;
+    responseBox.classList.add('visible');
+    responseLabel.style.display = 'block';
+
+    // Build badges
+    badgeRow.innerHTML = '';
+    const add = (icon, text, cls) => {
+      const b = document.createElement('div');
+      b.className = `badge ${cls}`;
+      b.textContent = `${icon} ${text}`;
+      badgeRow.appendChild(b);
+    };
+
+    add('🌐', data.detected_language || 'English',  'badge-blue');
+    add('💬', data.sentiment || 'Neutral',
+        data.sentiment === 'Positive' ? 'badge-green' :
+        data.sentiment === 'Negative' ? 'badge-red' : 'badge-blue');
+    add('🎫', `Ticket #${data.ticket_id}`, 'badge-purple');
+    add('🔥', data.priority || 'Medium',
+        data.priority === 'High' ? 'badge-red' :
+        data.priority === 'Low'  ? 'badge-green' : 'badge-yellow');
+
+    if (data.reflection_triggered) {
+      add('🔄', 'Self-Corrected', 'badge-yellow');
+    }
+    if (data.actions_taken?.email_sent) {
+      add('📧', 'Email Sent', 'badge-green');
+    }
+    if (data.actions_taken?.discord_alert_sent) {
+      add('📢', 'Discord Alert', 'badge-purple');
+    }
+  }
+
+  // ── Text-to-Speech ────────────────────────────────────────────────────────
+  function speakResponse(text, lang) {
+    if (!window.speechSynthesis) return;
+
+    // Cancel any ongoing speech
+    window.speechSynthesis.cancel();
+
+    setStatus('speaking', '🔊 Agent responding via voice...');
+    micRing.classList.add('speaking');
+    waveform.classList.add('active');
+
+    const langMap = { 'Hindi': 'hi-IN', 'Marathi': 'mr-IN', 'Hinglish': 'hi-IN' };
+    const utter   = new SpeechSynthesisUtterance(text);
+    utter.lang    = langMap[lang] || 'en-IN';
+    utter.rate    = 0.95;
+    utter.pitch   = 1.0;
+
+    utter.onend = () => {
+      setStatus('', '✅ Done. Click mic for another query.');
+      micRing.classList.remove('speaking');
+      waveform.classList.remove('active');
+    };
+
+    utter.onerror = () => {
+      micRing.classList.remove('speaking');
+      waveform.classList.remove('active');
+    };
+
+    window.speechSynthesis.speak(utter);
+  }
+
+  // ── Helpers ───────────────────────────────────────────────────────────────
+  function setStatus(type, text) {
+    statusLabel.className = 'status-label';
+    if (type) statusLabel.classList.add(type);
+    statusLabel.textContent = text;
+  }
+
+  function resetUI() {
+    isListening = false;
+    micRing.classList.remove('listening');
+    waveform.classList.remove('active');
+    micBtn.textContent = '🎤';
+    setStatus('', 'Click the microphone to speak');
+  }
+
+  function resetResponse() {
+    responseBox.classList.remove('visible');
+    responseBox.textContent = '';
+    responseLabel.style.display = 'none';
+    badgeRow.innerHTML = '';
+  }
+</script>
+</body>
+</html>

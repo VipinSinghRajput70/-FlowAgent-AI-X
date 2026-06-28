@@ -1,0 +1,15 @@
+FlowAgent AI System FAQ
+Q: What is FlowAgent AI?
+A: FlowAgent AI is an advanced multi-agent business operations and customer support platform that automates customer messaging, sentiment detection, SQLite ticket recording, ML lead qualification, and business analytics.
+
+Q: How much do your subscription plans cost?
+A: Our plans are:
+- Basic Plan: $29/month. Includes 1-agent operations, up to 1000 tickets/month, and basic email support.
+- Pro Plan: $99/month. Includes multi-agent collaboration (up to 4 agents), 10,000 tickets/month, custom local ML models, and 24/7 ticket support.
+- Enterprise Plan: Custom pricing (starting at $499/month). Includes unlimited agent orchestration, dedicated ChromaDB vector instances, custom API integrations, and SLA-based technical support.
+
+Q: Do you offer a refund?
+A: Yes, we provide a 14-day money-back guarantee for all basic and pro plans if you are unsatisfied with our platform. Please contact refund@flowagent.ai to request a refund.
+
+Q: How do I change my account email?
+A: Go to Settings in the user dashboard, click on Account Information, enter your new email address, and verify it using the confirmation code sent to your inbox.

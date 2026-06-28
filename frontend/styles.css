@@ -1,0 +1,234 @@
+/* Global Styling */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+html, body, [class*="css"] {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: #e2e8f0;
+}
+
+/* Custom CSS to inject in Streamlit */
+div.block-container {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    max-width: 95%;
+}
+
+/* Glassmorphism Card style */
+.glass-card {
+    background: rgba(17, 25, 40, 0.65);
+    backdrop-filter: blur(12px) saturate(180%);
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
+    background-color: rgba(17, 25, 40, 0.65);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.glass-card-header {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #00f2fe;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+/* Metrics Dashboard grid */
+.metric-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.metric-card {
+    background: rgba(26, 32, 44, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 15px 20px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.metric-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(0, 242, 254, 0.3);
+    box-shadow: 0 5px 15px rgba(0, 242, 254, 0.1);
+}
+
+.metric-card-val {
+    font-family: 'Outfit', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #00f2fe;
+    margin-top: 5px;
+}
+
+.metric-card-lbl {
+    font-size: 0.85rem;
+    color: #a0aec0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Custom agent communication bubble */
+.agent-bubble {
+    background: rgba(30, 41, 59, 0.45);
+    border-left: 4px solid #4f46e5;
+    border-radius: 0 12px 12px 0;
+    padding: 15px 20px;
+    margin-bottom: 15px;
+    display: flex;
+    gap: 15px;
+    animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.agent-avatar {
+    font-size: 2.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.agent-info {
+    flex-grow: 1;
+}
+
+.agent-name {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: #38bdf8;
+    margin-bottom: 3px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.agent-action {
+    font-size: 0.8rem;
+    color: #34d399;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+}
+
+.agent-body {
+    font-size: 0.95rem;
+    color: #cbd5e1;
+    line-height: 1.5;
+    margin-top: 8px;
+}
+
+/* Agent Specific Colors */
+.agent-support { border-left-color: #3b82f6; }
+.agent-care { border-left-color: #ec4899; }
+.agent-ticket { border-left-color: #f59e0b; }
+.agent-sales { border-left-color: #10b981; }
+.agent-analytics { border-left-color: #8b5cf6; }
+.agent-supervisor { border-left-color: #00f2fe; }
+
+/* Custom Badge style */
+.custom-badge {
+    padding: 4px 10px;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+.badge-hot { background-color: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid #ef4444; }
+.badge-warm { background-color: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid #f59e0b; }
+.badge-cold { background-color: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid #3b82f6; }
+
+.badge-high { background-color: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid #ef4444; }
+.badge-medium { background-color: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid #f59e0b; }
+.badge-low { background-color: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid #10b981; }
+
+.badge-open { background-color: rgba(139, 92, 246, 0.2); color: #a78bfa; border: 1px solid #8b5cf6; }
+.badge-inprogress { background-color: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid #3b82f6; }
+.badge-resolved { background-color: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid #10b981; }
+
+/* Omnichannel Channel Badges */
+.badge-channel {
+    font-size: 0.75rem;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+.channel-whatsapp { background-color: rgba(37, 211, 102, 0.15); color: #25d366; border: 1px solid #25d366; }
+.channel-telegram { background-color: rgba(0, 136, 204, 0.15); color: #0088cc; border: 1px solid #0088cc; }
+.channel-email { background-color: rgba(167, 139, 250, 0.15); color: #a78bfa; border: 1px solid #a78bfa; }
+.channel-webchat { background-color: rgba(6, 182, 212, 0.15); color: #06b6d4; border: 1px solid #06b6d4; }
+
+/* Timeline connector styling */
+.timeline-connector {
+    width: 2px;
+    height: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    margin-left: 45px;
+    margin-top: -5px;
+    margin-bottom: -5px;
+}
+
+/* User Login Portal Container */
+.login-box {
+    max-width: 420px;
+    margin: 80px auto;
+    padding: 35px;
+    background: rgba(17, 25, 40, 0.75);
+    backdrop-filter: blur(16px) saturate(180%);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    text-align: center;
+}
+
+/* Glowing animation for active workflow agent nodes */
+@keyframes pulse-glow {
+    0% { filter: drop-shadow(0 0 2px rgba(0, 242, 254, 0.5)); }
+    50% { filter: drop-shadow(0 0 12px rgba(0, 242, 254, 0.9)); }
+    100% { filter: drop-shadow(0 0 2px rgba(0, 242, 254, 0.5)); }
+}
+
+.svg-active-node {
+    animation: pulse-glow 2s infinite ease-in-out;
+}
+
+/* Voice AI glowing microphone */
+.glowing-mic {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #ff007f 0%, #7f00ff 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.2rem;
+    box-shadow: 0 0 20px rgba(127, 0, 255, 0.6);
+    margin: 15px auto;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.glowing-mic:hover {
+    transform: scale(1.08);
+    box-shadow: 0 0 35px rgba(255, 0, 127, 0.8);
+}
+
+.mic-active {
+    animation: pulse-glow 1.2s infinite alternate;
+    background: radial-gradient(circle, #00f2fe 0%, #4f46e5 100%);
+    box-shadow: 0 0 25px rgba(0, 242, 254, 0.8);
+}

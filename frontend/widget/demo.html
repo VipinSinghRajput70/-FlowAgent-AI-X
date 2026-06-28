@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apex Industries | Corporate Home</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: #070a13;
+            color: #ffffff;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+        header {
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(7, 10, 19, 0.8);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        .logo {
+            font-weight: 800;
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, #00f2fe 0%, #4f46e5 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        nav a {
+            color: #cbd5e1;
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+        }
+        nav a:hover {
+            color: #00f2fe;
+        }
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+            background: radial-gradient(circle at center, rgba(0, 242, 254, 0.08) 0%, rgba(7, 10, 19, 0) 70%);
+            margin-top: 60px;
+        }
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #ffffff 30%, #a0aec0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero p {
+            font-size: 1.2rem;
+            color: #94a3b8;
+            max-width: 600px;
+            margin-bottom: 30px;
+        }
+        .btn {
+            background: linear-gradient(135deg, #00f2fe 0%, #4f46e5 100%);
+            color: #ffffff;
+            padding: 12px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0, 242, 254, 0.3);
+            transition: all 0.3s;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 242, 254, 0.4);
+        }
+        .widget-info {
+            max-width: 800px;
+            margin: 0 auto 100px auto;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        .widget-info h2 {
+            font-size: 1.8rem;
+            color: #00f2fe;
+            margin-bottom: 15px;
+        }
+        .widget-info code {
+            display: block;
+            background: #03050a;
+            padding: 15px;
+            border-radius: 8px;
+            color: #38bdf8;
+            font-size: 0.9rem;
+            margin-top: 15px;
+            overflow-x: auto;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">APEX INDUSTRIES</div>
+        <nav>
+            <a href="#">Solutions</a>
+            <a href="#">Pricing</a>
+            <a href="#">Docs</a>
+            <a href="#">Contact</a>
+        </nav>
+    </header>
+
+    <div class="hero">
+        <h1>Next-Gen Operations Infrastructure</h1>
+        <p>Enterprise scalable APIs, unified workflow engine, and real-time AI collaborative operations desk.</p>
+        <a href="#" class="btn">Explore Platform</a>
+    </div>
+
+    <div class="widget-info">
+        <h2>Embeddable Chat Widget Demo</h2>
+        <p>This landing page demonstrates the deployable FlowAgent AI widget. You can trigger the floating chat bubble on the bottom right of this screen to query the multi-agent system directly. It communicates in real-time with the local FastAPI backend API.</p>
+        <p style="margin-top: 10px;">To embed this chat helper on any web page, add the following script tag before the closing <code>&lt;/body&gt;</code> tag:</p>
+        <code>&lt;script src="http://localhost:8000/widget/chat-widget.js"&gt;&lt;/script&gt;</code>
+    </div>
+
+    <!-- Inject the FlowAgent widget script -->
+    <script src="chat-widget.js"></script>
+</body>
+</html>

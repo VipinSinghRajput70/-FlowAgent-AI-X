@@ -1,0 +1,28 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+
+# Database and store files
+backend/flowagent.db
+backend/chroma_db/
+backend/uploads/*
+!backend/uploads/.gitkeep
+
+# ML Model checkpoints (auto-trained on startup)
+backend/ml/models/*.joblib
+
+# Local IDE configuration
+.idea/
+.vscode/
+.gemini/
+Cwd/
+*.log
