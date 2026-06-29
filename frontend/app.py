@@ -19,7 +19,7 @@ st.set_page_config(
 )
 
 # API Configuration
-API_URL = "http://localhost:8000"
+API_URL = "https://flowagent-backend.onrender.com"
 
 # Inject custom CSS
 def local_css(file_name):
