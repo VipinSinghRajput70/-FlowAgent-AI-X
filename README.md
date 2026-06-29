@@ -1,6 +1,11 @@
-# 📚 FlowAgent AI — Combined Project Documentation
+# 🤖 FlowAgent AI X — Autonomous Multi-Agent Business Operating System
 
-This document combines the documentation from the root, backend, and frontend of the FlowAgent AI repository to give you a single, unified manual that you can easily share.
+### 🔗 Live Project Resources:
+* 🖥️ **Live Console Dashboard**: [https://flowagent-ai-x.streamlit.app/](https://flowagent-ai-x.streamlit.app/)
+* 💻 **GitHub Repository**: [https://github.com/VipinSinghRajput70/-FlowAgent-AI-X](https://github.com/VipinSinghRajput70/-FlowAgent-AI-X)
+* 🚀 **Live Backend API Docs**: [https://flowagent-backend.onrender.com/docs](https://flowagent-backend.onrender.com/docs)
+
+---
 
 ## 📋 Table of Contents
 1. [Root Project Overview](#-flowagent-ai--multi-agent-business-operations-platform)
