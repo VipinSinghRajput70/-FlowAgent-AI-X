@@ -471,7 +471,7 @@ tab_dash, tab_chat, tab_omni, tab_twin, tab_lead, tab_tickets, tab_kb, tab_bench
     "💼 Lead Intelligence",
     "🎫 Support Tickets",
     "📁 Knowledge Hub & Self-Heal",
-    "🏆 Win Benchmarks",
+    "📊 Operations Scorecard",
     "🗂️ CRM Pipeline"
 ])
 
@@ -1350,10 +1350,10 @@ with tab_kb:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# TAB 8: WIN BENCHMARKS
+# TAB 8: OPERATIONS SCORECARD
 # ─────────────────────────────────────────────────────────────────────────────
 with tab_bench:
-    st.markdown('<div class="glass-card-header">🏆 FlowAgent AI X Hackathon Competitive Scorecard</div>', unsafe_allow_html=True)
+    st.markdown('<div class="glass-card-header">📈 FlowAgent AI X Operations Competitiveness Scorecard</div>', unsafe_allow_html=True)
     st.markdown("""
     <div style="font-size:0.85rem; color:#64748b; margin-bottom:15px;">
         Compare traditional support & business operations against the autonomous 12-agent FlowAgent AI X ecosystem.
