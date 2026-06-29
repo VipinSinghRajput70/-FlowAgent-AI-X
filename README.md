@@ -32,7 +32,11 @@ This document combines the documentation from the root, backend, and frontend of
 
 # 🤖 FlowAgent AI X — Autonomous Multi-Agent Business Operating System
 
-> **FlowAgent AI X is a state-of-the-art, hackathon-winning autonomous business operating system that coordinates 12 specialized AI agents, persistent Business Memory, real-world action integrations (Resend, Discord webhooks), explainable AI churn forecasting, a live digital twin simulator, and self-healing knowledge curators.**
+> **FlowAgent AI X is a state-of-the-art autonomous business operating system that coordinates 12 specialized AI agents, persistent Business Memory, real-world action integrations (Resend, Discord webhooks), explainable AI churn forecasting, a live digital twin simulator, and self-healing knowledge curators.**
+
+### 🔗 Live Resources:
+* 🖥️ **Live Dashboard Console**: [https://flowagent-ai-x.streamlit.app](https://flowagent-ai-x.streamlit.app)
+* 💻 **GitHub Code Repository**: [https://github.com/VipinSinghRajput70/-FlowAgent-AI-X](https://github.com/VipinSinghRajput70/-FlowAgent-AI-X)
 
 <p align="center">
   <img src="https://img.shields.io/badge/Python-3.12+-3776AB?style=for-the-badge&logo=python&logoColor=white"/>
